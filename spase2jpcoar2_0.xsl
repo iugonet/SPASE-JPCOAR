@@ -80,6 +80,7 @@
 
         <!-- geolocation -->
         <xsl:apply-templates select="//spase:InstrumentID"/>
+        <xsl:apply-templates select="//spase:DisplayData/spase:SpatialCoverage | //spase:NumericalData/spase:SpatialCoverage | //spase:Granule/spase:SpatialCoverage"/>
 
         <!-- fundingReference -->
         <xsl:apply-templates select="//spase:ResourceHeader/Funding"/>
@@ -118,8 +119,14 @@
 
     <xsl:variable name="role">
         <xsl:choose>
-            <xsl:when test="spase:Role='MetadataContact'">
+            <xsl:when test="spase:Role='PrincipalInvestigator'">
                 <xsl:text>ContactPerson</xsl:text>
+            </xsl:when>
+            <xsl:when test="spase:Role='MetadataContact'">
+                <xsl:text>DataManager</xsl:text>
+            </xsl:when>
+            <xsl:when test="spase:Role='DataProducer'">
+                <xsl:text>DataManager</xsl:text>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:text>ProjectMember</xsl:text>
@@ -256,6 +263,25 @@
                 <xsl:value-of select="$observatory/spase:Location/spase:Longitude"/>
             </datacite:pointLongitude>
         </datacite:geoLocationPoint>
+    </datacite:geoLocation>
+</xsl:template>
+
+<xsl:template match="//spase:DisplayData/spase:SpatialCoverage | //spase:NumericalData/spase:SpatialCoverage | //spase:Granule/spase:SpatialCoverage">
+    <datacite:geoLocation>
+        <datacite:geoLocationBox>
+            <datacite:westBoundLongitude>
+                <xsl:value-of select="spase:WesternmostLongitude"/>
+            </datacite:westBoundLongitude>
+            <datacite:eastBoundLongitude>
+                <xsl:value-of select="spase:EasternmostLongitude"/>
+            </datacite:eastBoundLongitude>
+            <datacite:southBoundLatitude>
+                <xsl:value-of select="spase:SouthernmostLatitude"/>
+            </datacite:southBoundLatitude>
+            <datacite:northBoundLatitude>
+                <xsl:value-of select="spase:NorthernmostLatitude"/>
+            </datacite:northBoundLatitude>
+        </datacite:geoLocationBox>
     </datacite:geoLocation>
 </xsl:template>
 
