@@ -4,6 +4,7 @@ import os
 import subprocess
 
 xslname = 'spase2jpcoar.xsl'
+# xslname = 'spase2jpcoar2_0.xsl'
 
 if __name__ == '__main__':
     cwd = os.getcwd()
